@@ -6,11 +6,7 @@ from app.routes import api
 
 
 def create_app():
-    app = Flask(
-        __name__,
-        static_folder='../static',
-        static_url_path='/static'
-    )
+    app = Flask(__name__, static_folder=None)
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['DEBUG'] = DEBUG
 

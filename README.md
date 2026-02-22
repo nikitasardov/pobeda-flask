@@ -100,8 +100,9 @@
 - **Объём CRUD**: строго по заданию — только GET + POST (без PUT/DELETE)
 - **POST `/users` эндпоинт**: в задании 1 явно не указан, но необходим для выполнения задания 3
 - **Валидация данных**: проверка обязательных полей и формата email при создании пользователя
-- **Фронтенд**: самостоятельная HTML-страница (`static/index.html`), не зависит от Jinja2. Flask раздаёт её как статический файл
-- **Docker**: контейнеризация на базе `python:3.12-slim`
+- **Фронтенд**: самостоятельная HTML-страница (`static/index.html`), не зависит от Flask. Раздаётся nginx
+- **Архитектура**: два независимых сервиса — Flask API (`api`) и nginx (`frontend`). Фронтенд и бэкенд могут жить на разных серверах
+- **Docker**: `api` — `python:3.12-slim`, `frontend` — `nginx:alpine`. nginx проксирует `/users` на Flask
 - **Персистентность данных**: SQLite-файл хранится в `./data`, монтируется в контейнер как volume
 
 ---
@@ -110,25 +111,28 @@
 
 ```
 pobeda-flask/
-├── run.py                # точка входа (вне пакета app/)
-├── app/
+├── app/                  # Flask API (сервис api)
 │   ├── __init__.py       # фабрика create_app()
 │   ├── config.py
 │   ├── models.py
 │   └── routes.py
-├── static/
-│   ├── index.html        # самостоятельная HTML-страница (не Jinja2-шаблон)
+├── run.py                # точка входа Flask
+├── static/               # Фронтенд (сервис frontend, nginx)
+│   ├── index.html
 │   └── js/
 │       └── app.js
-├── data/                 # в .gitignore, монтируется в контейнер
-├── Dockerfile
-├── docker-compose.yml
+├── nginx/
+│   └── nginx.conf        # конфиг nginx: статика + прокси /users → api
+├── data/                 # в .gitignore, монтируется в контейнер api
+├── Dockerfile            # образ Flask API
+├── docker-compose.yml    # два сервиса: api + frontend
 ├── requirements.txt
+├── .env.example
 ├── .gitignore
-├── README.md             # методология, требования, решения
-├── CHECKLIST.md          # чеклист реализации
-├── DEVLOG.md             # журнал разработки
-└── raw_task.txt          # исходное задание
+├── README.md
+├── CHECKLIST.md
+├── DEVLOG.md
+└── raw_task.txt
 ```
 
 ---
