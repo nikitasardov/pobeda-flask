@@ -41,4 +41,42 @@ function showUserDetail(userId) {
         .catch(error => console.error('Ошибка загрузки пользователя:', error));
 }
 
-document.addEventListener('DOMContentLoaded', loadUsers);
+function handleAddUser(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('input-name').value.trim();
+    const email = document.getElementById('input-email').value.trim();
+
+    fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+    })
+        .then(response => {
+            if (!response.ok) return response.json().then(data => { throw new Error(data.error); });
+            return response.json();
+        })
+        .then(user => {
+            showAlert(`Пользователь «${user.name}» добавлен`, 'success');
+            document.getElementById('add-user-form').reset();
+            loadUsers();
+        })
+        .catch(error => {
+            showAlert(error.message || 'Ошибка при добавлении', 'danger');
+        });
+}
+
+function showAlert(message, type) {
+    const container = document.getElementById('alert-container');
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+    container.prepend(alert);
+
+    setTimeout(() => alert.remove(), 5000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadUsers();
+    document.getElementById('add-user-form').addEventListener('submit', handleAddUser);
+});

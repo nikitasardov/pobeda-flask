@@ -10,6 +10,31 @@
     <div class="container mt-4">
         <h1 class="mb-4">Список пользователей</h1>
 
+        <!-- Уведомления -->
+        <div id="alert-container"></div>
+
+        <!-- Форма добавления пользователя -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Добавить пользователя</h5>
+                <form id="add-user-form">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="input-name" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="input-name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="input-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="input-email" required>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <table class="table table-hover" id="users-table">
             <thead class="table-dark">
                 <tr>

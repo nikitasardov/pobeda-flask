@@ -53,6 +53,18 @@ def get_all_users():
     return users
 
 
+def create_user(name, email):
+    conn = get_connection()
+    cursor = conn.execute(
+        'INSERT INTO users (name, email) VALUES (?, ?)',
+        (name, email)
+    )
+    conn.commit()
+    user_id = cursor.lastrowid
+    conn.close()
+    return get_user_by_id(user_id)
+
+
 def get_user_by_id(user_id):
     conn = get_connection()
     cursor = conn.execute(
