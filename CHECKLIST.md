@@ -3,10 +3,10 @@
 ## Подготовка (инфраструктура)
 
 - [x] Создать `.gitignore`
-- [ ] Создать структуру каталогов (`app/`, `static/js/`, `data/`)
-- [ ] Создать `requirements.txt` (Flask с фиксацией версии)
-- [ ] `Dockerfile` — образ на базе `python:3.12-slim`, установка зависимостей, запуск приложения
-- [ ] `docker-compose.yml` — сервис `web`, порт `5000:5000`, volume `./data:/app/data`
+- [x] Создать структуру каталогов (`app/`, `static/js/`, `data/`)
+- [x] Создать `requirements.txt` (Flask 3.1.0)
+- [x] `Dockerfile` — `python:3.12-slim`, установка зависимостей, запуск `app/app.py`
+- [x] `docker-compose.yml` — сервис `web`, порт `5000:5000`, volume `./data:/app/data`
 
 ## Задание 1. Бэкенд (Python)
 
