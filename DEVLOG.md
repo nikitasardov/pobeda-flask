@@ -31,7 +31,7 @@
 **Что сделано:**
 - Созданы каталоги: `app/`, `static/js/`, `data/`
 - `requirements.txt`: Flask 3.1.0 (sqlite3 — встроенный модуль, не требует установки)
-- `Dockerfile`: образ `python:3.12-slim`, установка зависимостей, запуск `app/app.py`
+- `Dockerfile`: образ `python:3.12-slim`, установка зависимостей, запуск `run.py`
 - `docker-compose.yml`: сервис `web`, порт 5000, volume `./data:/app/data`, `restart: unless-stopped`
 
 **Что скорректировано после ревью:**
@@ -39,6 +39,38 @@
 
 **Проблемы / корректировки:**
 - (нет)
+
+---
+
+## Этап 2. Задание 1 — Бэкенд
+
+**Что сделано:**
+- `app/config.py` — конфигурация: пути к БД и каталогу данных, настройки Flask (host, port, debug, secret_key) через переменные окружения
+- `app/models.py` — слой данных:
+  - `get_connection()` — подключение к SQLite с `row_factory = sqlite3.Row`
+  - `init_db()` — создание таблицы `users`, автоматический вызов `seed_db` при пустой таблице
+  - `seed_db()` — 5 тестовых пользователей
+  - `get_all_users()`, `get_user_by_id()` — чтение данных
+- `app/routes.py` — Blueprint `api`:
+  - `GET /users` — список пользователей (JSON)
+  - `GET /users/<id>` — пользователь по id (JSON), 404 если не найден
+- `app/__init__.py` — фабрика `create_app()`: создание Flask-app, указание `static_folder`, регистрация Blueprint, вызов `init_db()`
+- `run.py` — точка входа: вызов `create_app()`, запуск сервера
+- `.env.example` — документация переменных окружения
+
+**Что скорректировано после ревью:**
+- Точка входа перенесена из `app/app.py` в `run.py` (корень проекта) —
+  circular import при `from app import create_app` внутри пакета `app/`
+
+**Проблемы / корректировки:**
+- Circular import при первом запуске в Docker. Причина: `app/app.py` находился
+  внутри пакета `app/`, Python при `from app import create_app` пытался
+  инициализировать пакет, который ещё загружался. Исправлено переносом в `run.py`.
+
+**Результаты проверки:**
+- `GET /users` — 200, JSON с 5 seed-пользователями
+- `GET /users/1` — 200, JSON с конкретным пользователем
+- `GET /users/999` — 404, `{"error": "Пользователь не найден"}`
 
 ---
 

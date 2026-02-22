@@ -110,8 +110,9 @@
 
 ```
 pobeda-flask/
+├── run.py                # точка входа (вне пакета app/)
 ├── app/
-│   ├── __init__.py
+│   ├── __init__.py       # фабрика create_app()
 │   ├── config.py
 │   ├── models.py
 │   └── routes.py

@@ -10,20 +10,20 @@
 
 ## Задание 1. Бэкенд (Python)
 
-- [ ] `app/config.py` — путь к БД (`data/users.db`), настройки приложения
-- [ ] `app/models.py` — работа с SQLite через `sqlite3`:
-  - [ ] `init_db()` — создание таблицы `users` (id, name, email)
-  - [ ] `seed_db()` — заполнение 3–5 тестовыми пользователями
-  - [ ] `get_all_users()` — получение всех пользователей
-  - [ ] `get_user_by_id(id)` — получение пользователя по id
-- [ ] `app/routes.py` — маршруты (Blueprint):
-  - [ ] `GET /users` — список всех пользователей (JSON)
-  - [ ] `GET /users/<id>` — пользователь по id (JSON)
-- [ ] `app/__init__.py` — фабрика приложения
-- [ ] `app/app.py` — точка входа: создание Flask-app, регистрация Blueprint, вызов `init_db()`
-- [ ] Обработка ошибок:
-  - [ ] 404 — пользователь не найден
-- [ ] **Проверка:** запуск, GET `/users` и GET `/users/<id>` возвращают JSON
+- [x] `app/config.py` — путь к БД (`data/users.db`), настройки приложения
+- [x] `app/models.py` — работа с SQLite через `sqlite3`:
+  - [x] `init_db()` — создание таблицы `users` (id, name, email)
+  - [x] `seed_db()` — заполнение 5 тестовыми пользователями
+  - [x] `get_all_users()` — получение всех пользователей
+  - [x] `get_user_by_id(id)` — получение пользователя по id
+- [x] `app/routes.py` — маршруты (Blueprint):
+  - [x] `GET /users` — список всех пользователей (JSON)
+  - [x] `GET /users/<id>` — пользователь по id (JSON)
+- [x] `app/__init__.py` — фабрика приложения
+- [x] `run.py` — точка входа: создание Flask-app, запуск сервера (вынесен из `app/` для избежания circular import)
+- [x] Обработка ошибок:
+  - [x] 404 — пользователь не найден
+- [x] **Проверка:** запуск, GET `/users` и GET `/users/<id>` возвращают JSON
 
 ## Задание 2. Фронтенд (JavaScript)
 
