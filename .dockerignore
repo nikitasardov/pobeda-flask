@@ -1,0 +1,16 @@
+docs/
+data/
+.github/
+.git/
+.gitignore
+.env
+.env.example
+.htmlvalidate.json
+eslint.config.js
+package.json
+package-lock.json
+node_modules/
+Dockerfile
+Dockerfile.lint
+docker-compose.yml
+*.md
