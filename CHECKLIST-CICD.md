@@ -31,40 +31,43 @@ README ссылается на shields.io endpoint.
 
 ## Подготовка
 
-- [ ] Создать GitHub Gist с файлом `coverage.json`
-- [ ] Создать GitHub PAT с правом `gist`
-- [ ] Сгенерировать SSH-ключ для деплоя (или использовать существующий)
-- [ ] Заполнить секреты в Settings → Secrets and variables → Actions
+- [x] Создать GitHub Gist с файлом `coverage.json`
+- [x] Создать GitHub PAT с правом `gist`
+- [x] Сгенерировать SSH-ключ для деплоя (или использовать существующий)
+- [x] Заполнить секреты в Settings → Secrets and variables → Actions
 - [ ] Клонировать репо на сервер, создать `data/`
 
 ## Воркфлоу (.github/workflows/ci.yml)
 
-- [ ] Джоб `test`: pytest в Docker (`docker compose run --rm test`)
-- [ ] Джоб `lint`: ESLint + html-validate в Docker (`docker compose run --rm lint`)
-- [ ] Джоб `badge`: парсинг покрытия, обновление Gist (только push в master)
-- [ ] Джоб `deploy`: сборка образа, SCP, SSH-деплой (только push в master)
-- [ ] Условие: deploy только после успешных test + lint
+- [x] Джоб `test`: pytest в Docker + парсинг покрытия + обновление badge
+- [x] Джоб `lint`: ESLint + html-validate в Docker
+- [x] Джоб `build`: сборка образа, сохранение, SCP на сервер (только push в master)
+- [x] Джоб `deploy`: SSH — git pull, docker load, compose up, очистка (только push в master)
+- [x] Условие: build только после успешных test + lint; deploy после build
 
-## Деплой (фаза 2 + 3)
+## Фаза 2. Сборка и доставка (джоб `build`)
 
-- [ ] Сборка образа на раннере: `docker compose build api`
-- [ ] Сохранение: `docker save | gzip`
-- [ ] Доставка: `scp` на сервер
-- [ ] SSH: `git pull origin master`
-- [ ] SSH: `docker load -i image.tar.gz`
-- [ ] SSH: `docker compose up -d`
-- [ ] SSH: `rm image.tar.gz`
+- [x] Сборка образа на раннере: `docker compose build api`
+- [x] Сохранение: `docker save | gzip`
+- [x] Доставка: `scp` на сервер
+
+## Фаза 3. Деплой (джоб `deploy`)
+
+- [x] SSH: `git pull origin master`
+- [x] SSH: `docker load -i image.tar.gz`
+- [x] SSH: `docker compose up -d`
+- [x] SSH: `rm image.tar.gz`
 
 ## Документация
 
-- [ ] Badge покрытия в README.md
-- [ ] Ссылка на CHECKLIST-CICD.md в README.md
-- [ ] DEVLOG.md — этап 11
-- [ ] CHECKLIST-TESTS.md — отметить пункты CI
+- [x] Badge покрытия в README.md
+- [x] Ссылка на CHECKLIST-CICD.md в README.md
+- [x] DEVLOG.md — этап 11
+- [x] CHECKLIST-TESTS.md — отмечены пункты CI
 
 ## Проверка
 
 - [ ] Push в master → тесты проходят
 - [ ] Push в master → образ доставлен и развёрнут на сервере
-- [ ] Badge покрытия отображается в README
+- [x] Badge покрытия отображается в README
 - [ ] PR → запускаются только тесты (без деплоя)

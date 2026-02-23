@@ -283,21 +283,26 @@
 
 **Что сделано:**
 - `CHECKLIST-CICD.md` — чеклист с планом, секретами, пунктами проверки
-- `.github/workflows/ci.yml` — единый воркфлоу:
-  - Джоб `test`: pytest в Docker, парсинг покрытия, обновление badge (Shields.io + Gist)
-  - Джоб `lint`: ESLint + html-validate в Docker
-  - Джоб `deploy` (только push в master, после test + lint):
-    сборка образа на раннере → `docker save | gzip` → SCP на сервер →
-    SSH: `git pull` → `docker load` → `docker compose up -d` → удаление архива
+- `.github/workflows/ci.yml` — 4 джоба в 3 визуальных фазах:
+  - Фаза 1: `test` (pytest + покрытие + badge) и `lint` (ESLint + html-validate) — параллельно
+  - Фаза 2: `build` — сборка образа на раннере, `docker save | gzip`, SCP на сервер
+  - Фаза 3: `deploy` — SSH: `git pull`, `docker load`, `docker compose up -d`, очистка архива
+- Подготовка: создан Gist для badge, PAT, заполнены все секреты в GitHub
 - `README.md` — badge CI/CD и покрытия, обновлены структура проекта и таблица документов
 - `CHECKLIST-TESTS.md` — отмечены пункты CI-конфиг и badge
 
 **Решения на этом этапе:**
 - Сборка на раннере, не на сервере (сервер слабый)
 - Доставка образа через SCP (без Docker Registry — проще для одного сервера)
+- Образ доставляется на сервер в конце фазы build, а не в фазе deploy —
+  чёткое разделение: build = сборка + доставка, deploy = развёртывание
 - Обновление кода на сервере через `git pull` (compose, static, nginx.conf)
 - Badge через Shields.io + Gist (без внешних сервисов типа Codecov)
 - Тесты на PR (без деплоя), полный пайплайн на push в master
+
+**Что скорректировано после ревью:**
+- Первая версия ci.yml объединяла сборку и деплой в один джоб — визуально
+  отображалось 2 фазы вместо 3. Разделено на отдельные джобы build и deploy
 
 **Подготовительные действия (ручные):**
 - Создать Gist с `coverage.json`, получить GIST_ID
