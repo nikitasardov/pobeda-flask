@@ -1,0 +1,80 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: docker compose run --rm test 2>&1 | tee test-output.txt
+
+      - name: Extract coverage
+        if: github.event_name == 'push' && success()
+        id: coverage
+        run: |
+          COVERAGE=$(grep '^TOTAL' test-output.txt | awk '{print $NF}' | tr -d '%')
+          echo "total=$COVERAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Update coverage badge
+        if: github.event_name == 'push' && success()
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: coverage.json
+          label: coverage
+          message: ${{ steps.coverage.outputs.total }}%
+          valColorRange: ${{ steps.coverage.outputs.total }}
+          minColorRange: 50
+          maxColorRange: 90
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run linters
+        run: docker compose run --rm lint
+
+  deploy:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API image
+        run: docker compose build api
+
+      - name: Save image
+        run: docker save pobeda-flask-api:latest | gzip > pobeda-flask-api.tar.gz
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy image to server
+        run: |
+          scp -i ~/.ssh/deploy_key -P ${{ secrets.SSH_PORT }} \
+            pobeda-flask-api.tar.gz \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/
+
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "cd ${{ secrets.DEPLOY_PATH }} && \
+             git pull origin master && \
+             docker load -i pobeda-flask-api.tar.gz && \
+             docker compose up -d && \
+             rm pobeda-flask-api.tar.gz"

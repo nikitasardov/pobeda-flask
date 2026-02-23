@@ -91,5 +91,5 @@
 - [x] `tests/test_api.py` — интеграционные тесты
 - [x] Запуск: `pytest --cov=app tests/`
 - [x] Все тесты проходят (25/25)
-- [ ] (позже) CI-конфиг
-- [ ] (позже) Badge покрытия в README
+- [x] CI-конфиг — см. [CHECKLIST-CICD.md](CHECKLIST-CICD.md)
+- [x] Badge покрытия в README

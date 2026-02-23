@@ -279,6 +279,37 @@
 
 ---
 
+## Этап 11. CI/CD (GitHub Actions)
+
+**Что сделано:**
+- `CHECKLIST-CICD.md` — чеклист с планом, секретами, пунктами проверки
+- `.github/workflows/ci.yml` — единый воркфлоу:
+  - Джоб `test`: pytest в Docker, парсинг покрытия, обновление badge (Shields.io + Gist)
+  - Джоб `lint`: ESLint + html-validate в Docker
+  - Джоб `deploy` (только push в master, после test + lint):
+    сборка образа на раннере → `docker save | gzip` → SCP на сервер →
+    SSH: `git pull` → `docker load` → `docker compose up -d` → удаление архива
+- `README.md` — badge CI/CD и покрытия, обновлены структура проекта и таблица документов
+- `CHECKLIST-TESTS.md` — отмечены пункты CI-конфиг и badge
+
+**Решения на этом этапе:**
+- Сборка на раннере, не на сервере (сервер слабый)
+- Доставка образа через SCP (без Docker Registry — проще для одного сервера)
+- Обновление кода на сервере через `git pull` (compose, static, nginx.conf)
+- Badge через Shields.io + Gist (без внешних сервисов типа Codecov)
+- Тесты на PR (без деплоя), полный пайплайн на push в master
+
+**Подготовительные действия (ручные):**
+- Создать Gist с `coverage.json`, получить GIST_ID
+- Создать PAT с правом `gist`, добавить как GIST_TOKEN
+- Настроить SSH-ключ, добавить секреты SSH_KEY, SSH_HOST, SSH_USER, SSH_PORT, DEPLOY_PATH
+- Клонировать репо на сервер в DEPLOY_PATH
+
+**Проблемы / корректировки:**
+- (нет)
+
+---
+
 <!-- Шаблон для следующих этапов:
 
 ## Этап N. <Название>

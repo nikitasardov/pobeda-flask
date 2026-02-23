@@ -1,5 +1,8 @@
 # Проект «pobeda-flask»
 
+![CI/CD](https://github.com/USERNAME/pobeda-flask/actions/workflows/ci.yml/badge.svg)
+![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/USERNAME/GIST_ID/raw/coverage.json)
+
 ## Методология разработки
 
 ### Подход
@@ -127,7 +130,11 @@ pobeda-flask/
 │   └── nginx.conf        # конфиг nginx: статика + прокси /users → api
 ├── tests/                # тесты (pytest)
 │   ├── conftest.py       # фикстуры (временная БД)
-│   └── test_models.py    # unit-тесты models.py
+│   ├── test_models.py    # unit-тесты models.py
+│   └── test_api.py       # интеграционные тесты API
+├── .github/
+│   └── workflows/
+│       └── ci.yml        # CI/CD: тесты, линт, badge, деплой
 ├── data/                 # в .gitignore, монтируется в контейнер api
 ├── Dockerfile            # multi-stage: base (production) + test
 ├── Dockerfile.lint       # Node: ESLint + html-validate
@@ -139,6 +146,7 @@ pobeda-flask/
 ├── README.md
 ├── CHECKLIST.md
 ├── CHECKLIST-TESTS.md
+├── CHECKLIST-CICD.md
 ├── DEVLOG.md
 └── raw_task.txt
 ```
@@ -216,4 +224,5 @@ docker compose up -d
 | [CHECKLIST.md](CHECKLIST.md) | Чеклист реализации — отслеживание прогресса |
 | [CHECKLIST-TESTS.md](CHECKLIST-TESTS.md) | Чеклист тестов — unit, интеграционные, CI/CD |
 | [DEVLOG.md](DEVLOG.md) | Журнал разработки — что сделано, что скорректировано, какие проблемы |
+| [CHECKLIST-CICD.md](CHECKLIST-CICD.md) | Чеклист CI/CD — GitHub Actions, деплой |
 | [raw_task.txt](raw_task.txt) | Исходное задание (без изменений) |
