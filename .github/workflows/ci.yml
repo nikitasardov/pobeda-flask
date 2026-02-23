@@ -89,4 +89,5 @@ jobs:
              git pull origin master && \
              docker load -i pobeda-flask-api.tar.gz && \
              docker compose up -d && \
+             docker compose restart frontend && \
              rm pobeda-flask-api.tar.gz"

@@ -35,7 +35,7 @@ README ссылается на shields.io endpoint.
 - [x] Создать GitHub PAT с правом `gist`
 - [x] Сгенерировать SSH-ключ для деплоя (или использовать существующий)
 - [x] Заполнить секреты в Settings → Secrets and variables → Actions
-- [ ] Клонировать репо на сервер, создать `data/`
+- [x] Клонировать репо на сервер, создать `data/`
 
 ## Воркфлоу (.github/workflows/ci.yml)
 
@@ -56,6 +56,7 @@ README ссылается на shields.io endpoint.
 - [x] SSH: `git pull origin master`
 - [x] SSH: `docker load -i image.tar.gz`
 - [x] SSH: `docker compose up -d`
+- [x] SSH: `docker compose restart frontend` (перечитывает nginx.conf)
 - [x] SSH: `rm image.tar.gz`
 
 ## Документация
@@ -67,7 +68,7 @@ README ссылается на shields.io endpoint.
 
 ## Проверка
 
-- [ ] Push в master → тесты проходят
-- [ ] Push в master → образ доставлен и развёрнут на сервере
+- [x] Push в master → тесты проходят
+- [x] Push в master → образ доставлен и развёрнут на сервере
 - [x] Badge покрытия отображается в README
-- [ ] PR → запускаются только тесты (без деплоя)
+- [x] PR → запускаются только тесты (без деплоя)
