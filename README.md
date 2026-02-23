@@ -189,5 +189,6 @@ docker compose up -d
 | Файл | Назначение |
 |---|---|
 | [CHECKLIST.md](CHECKLIST.md) | Чеклист реализации — отслеживание прогресса |
+| [CHECKLIST-TESTS.md](CHECKLIST-TESTS.md) | Чеклист тестов — unit, интеграционные, CI/CD |
 | [DEVLOG.md](DEVLOG.md) | Журнал разработки — что сделано, что скорректировано, какие проблемы |
 | [raw_task.txt](raw_task.txt) | Исходное задание (без изменений) |
