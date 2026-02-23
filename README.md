@@ -53,6 +53,7 @@
 | AI-ассистент | Cursor Agent |
 | Контейнеризация | Docker, Docker Compose |
 | Тестирование | pytest, pytest-cov |
+| Линтинг фронтенда | ESLint 9, html-validate |
 | Контроль версий | Git |
 | Язык бэкенда | Python 3.12 + Flask |
 | База данных | SQLite 3 (встроенный модуль `sqlite3`) |
@@ -129,7 +130,8 @@ pobeda-flask/
 │   └── test_models.py    # unit-тесты models.py
 ├── data/                 # в .gitignore, монтируется в контейнер api
 ├── Dockerfile            # multi-stage: base (production) + test
-├── docker-compose.yml    # сервисы: api, frontend, test (профиль)
+├── Dockerfile.lint       # Node: ESLint + html-validate
+├── docker-compose.yml    # сервисы: api, frontend, test и lint (профиль test)
 ├── requirements.txt
 ├── requirements-test.txt # тестовые зависимости (pytest, pytest-cov)
 ├── .env.example
@@ -184,9 +186,16 @@ docker compose down
 docker compose run --rm test
 ```
 
-Тесты запускаются в изолированном контейнере (multi-stage build, профиль `test`).
-Каждый тест работает с временной БД — продакшен-данные не затрагиваются.
-Результат: exit code 0/1 + отчёт покрытия.
+Unit- и интеграционные тесты (pytest). Каждый тест работает с временной БД —
+продакшен-данные не затрагиваются. Результат: exit code 0/1 + отчёт покрытия.
+
+### Линтинг фронтенда
+
+```bash
+docker compose run --rm lint
+```
+
+ESLint (JavaScript) + html-validate (HTML-структура, доступность).
 
 ### Данные
 

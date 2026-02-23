@@ -247,6 +247,38 @@
 
 ---
 
+## Этап 10. Линтинг фронтенда (ESLint + html-validate)
+
+**Что сделано:**
+- `package.json` — ESLint 9, globals, html-validate, скрипты `lint:js`, `lint:html`, `lint`
+- `eslint.config.js` — flat config: browser globals, `bootstrap` как readonly, правила `no-undef`, `eqeqeq`
+- `.htmlvalidate.json` — `html-validate:recommended`, отключены `no-trailing-whitespace` и `require-sri`
+- `Dockerfile.lint` — `node:22-alpine`, установка зависимостей, запуск `npm run lint`
+- `docker-compose.yml` — сервис `lint` с профилем `test`
+- `.gitignore` — добавлен `node_modules/`
+- Запуск: `docker compose run --rm lint`
+
+**Исправления по результатам html-validate:**
+- `static/index.html` — добавлен `scope="col"` на три `<th>` (WCAG H63, доступность таблиц)
+- `static/index.html` — убран `aria-hidden="true"` с модального окна
+  (содержит фокусируемые элементы; Bootstrap управляет этим атрибутом динамически)
+
+**Отклонённые тесты:**
+- Jest (unit-тесты JS) — нецелесообразно: функции в `app.js` не содержат
+  бизнес-логики, только обращения к DOM и fetch. Для их тестирования потребовалось бы
+  мокать fetch, document, bootstrap.Modal — объём подготовки превышает объём тестируемого кода
+- E2E — решено ранее (этап 7)
+
+**Результаты проверки:**
+- ESLint: 0 ошибок, 0 предупреждений
+- html-validate: 0 ошибок, 0 предупреждений
+
+**Проблемы / корректировки:**
+- Долгая первичная сборка (скачивание node:22-alpine + npm install). При повторных запусках
+  образ кешируется
+
+---
+
 <!-- Шаблон для следующих этапов:
 
 ## Этап N. <Название>

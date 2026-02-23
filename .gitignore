@@ -31,5 +31,8 @@ env/
 .DS_Store
 Thumbs.db
 
+# Node (linting tools)
+node_modules/
+
 # Docker
 .docker/
