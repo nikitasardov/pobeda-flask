@@ -64,15 +64,15 @@
 
 ## Интеграционные тесты (`tests/test_api.py`)
 
-- [ ] Фикстура: Flask `test_client()` с временной БД
-- [ ] `GET /users` — 200, JSON-массив
-- [ ] `GET /users/1` — 200, JSON с полями `id`, `name`, `email`
-- [ ] `GET /users/999` — 404, JSON с `error`
-- [ ] `POST /users` (валидные данные) — 201, пользователь в ответе
-- [ ] `POST /users` (пустое имя) — 400
-- [ ] `POST /users` (некорректный email) — 400
-- [ ] `POST /users` (без тела) — 400
-- [ ] Сценарий: POST создаёт → GET возвращает нового пользователя в списке
+- [x] Фикстура: Flask `test_client()` с временной БД
+- [x] `GET /users` — 200, JSON-массив
+- [x] `GET /users/1` — 200, JSON с полями `id`, `name`, `email`
+- [x] `GET /users/999` — 404, JSON с `error`
+- [x] `POST /users` (валидные данные) — 201, пользователь в ответе
+- [x] `POST /users` (пустое имя) — 400
+- [x] `POST /users` (некорректный email) — 400
+- [x] `POST /users` (без тела) — 400
+- [x] Сценарий: POST создаёт → GET возвращает нового пользователя в списке
 
 ## Фронтенд (планируется)
 
@@ -86,8 +86,8 @@
 - [x] `tests/__init__.py`
 - [x] `tests/conftest.py` — фикстуры (временная БД, test client)
 - [x] `tests/test_models.py` — unit-тесты
-- [ ] `tests/test_api.py` — интеграционные тесты
-- [ ] Запуск: `pytest --cov=app tests/`
-- [ ] Все тесты проходят
+- [x] `tests/test_api.py` — интеграционные тесты
+- [x] Запуск: `pytest --cov=app tests/`
+- [x] Все тесты проходят (25/25)
 - [ ] (позже) CI-конфиг
 - [ ] (позже) Badge покрытия в README
