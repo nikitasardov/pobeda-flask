@@ -51,7 +51,8 @@
 |---|---|
 | IDE | Cursor |
 | AI-ассистент | Cursor Agent |
-| Контейнеризация | Docker, docker-compose |
+| Контейнеризация | Docker, Docker Compose |
+| Тестирование | pytest, pytest-cov |
 | Контроль версий | Git |
 | Язык бэкенда | Python 3.12 + Flask |
 | База данных | SQLite 3 (встроенный модуль `sqlite3`) |
@@ -123,14 +124,19 @@ pobeda-flask/
 │       └── app.js
 ├── nginx/
 │   └── nginx.conf        # конфиг nginx: статика + прокси /users → api
+├── tests/                # тесты (pytest)
+│   ├── conftest.py       # фикстуры (временная БД)
+│   └── test_models.py    # unit-тесты models.py
 ├── data/                 # в .gitignore, монтируется в контейнер api
-├── Dockerfile            # образ Flask API
-├── docker-compose.yml    # два сервиса: api + frontend
+├── Dockerfile            # multi-stage: base (production) + test
+├── docker-compose.yml    # сервисы: api, frontend, test (профиль)
 ├── requirements.txt
+├── requirements-test.txt # тестовые зависимости (pytest, pytest-cov)
 ├── .env.example
 ├── .gitignore
 ├── README.md
 ├── CHECKLIST.md
+├── CHECKLIST-TESTS.md
 ├── DEVLOG.md
 └── raw_task.txt
 ```
@@ -171,6 +177,16 @@ docker compose down
 | GET | `/users` | Список всех пользователей (JSON) |
 | GET | `/users/<id>` | Пользователь по id (JSON), 404 если не найден |
 | POST | `/users` | Создание пользователя (JSON: `name`, `email`), 201 / 400 |
+
+### Тесты
+
+```bash
+docker compose run --rm test
+```
+
+Тесты запускаются в изолированном контейнере (multi-stage build, профиль `test`).
+Каждый тест работает с временной БД — продакшен-данные не затрагиваются.
+Результат: exit code 0/1 + отчёт покрытия.
 
 ### Данные
 

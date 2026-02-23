@@ -50,17 +50,17 @@
 
 ## Unit-тесты (`tests/test_models.py`)
 
-- [ ] Фикстура: временная БД `:memory:`, подмена пути к БД через monkeypatch
-- [ ] `get_connection()` — возвращает соединение с `row_factory = sqlite3.Row`
-- [ ] `init_db()` — таблица `users` создаётся
-- [ ] `init_db()` — при пустой таблице автоматически вызывает `seed_db`
-- [ ] `seed_db()` — после вызова в таблице 5 записей
-- [ ] `get_all_users()` — возвращает список словарей с ключами `id`, `name`, `email`
-- [ ] `get_all_users()` — пустая таблица → пустой список
-- [ ] `get_user_by_id()` — находит существующего пользователя
-- [ ] `get_user_by_id()` — возвращает `None` для несуществующего
-- [ ] `create_user()` — создаёт пользователя, возвращает словарь с `id`
-- [ ] `create_user()` — id автоинкрементируется
+- [x] Фикстура: временная БД `:memory:`, подмена пути к БД через monkeypatch
+- [x] `get_connection()` — возвращает соединение с `row_factory = sqlite3.Row`
+- [x] `init_db()` — таблица `users` создаётся
+- [x] `init_db()` — при пустой таблице автоматически вызывает `seed_db`
+- [x] `seed_db()` — после вызова в таблице 5 записей
+- [x] `get_all_users()` — возвращает список словарей с ключами `id`, `name`, `email`
+- [x] `get_all_users()` — пустая таблица → пустой список
+- [x] `get_user_by_id()` — находит существующего пользователя
+- [x] `get_user_by_id()` — возвращает `None` для несуществующего
+- [x] `create_user()` — создаёт пользователя, возвращает словарь с `id`
+- [x] `create_user()` — id автоинкрементируется
 
 ## Интеграционные тесты (`tests/test_api.py`)
 
@@ -82,10 +82,10 @@
 
 ## Инфраструктура тестов
 
-- [ ] `requirements-test.txt` — pytest, pytest-cov
-- [ ] `tests/__init__.py`
-- [ ] `tests/conftest.py` — фикстуры (временная БД, test client)
-- [ ] `tests/test_models.py` — unit-тесты
+- [x] `requirements-test.txt` — pytest, pytest-cov
+- [x] `tests/__init__.py`
+- [x] `tests/conftest.py` — фикстуры (временная БД, test client)
+- [x] `tests/test_models.py` — unit-тесты
 - [ ] `tests/test_api.py` — интеграционные тесты
 - [ ] Запуск: `pytest --cov=app tests/`
 - [ ] Все тесты проходят

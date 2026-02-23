@@ -1,9 +1,18 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      target: base
     volumes:
       - ./data:/app/data
     restart: unless-stopped
+
+  test:
+    build:
+      context: .
+      target: test
+    profiles:
+      - test
 
   frontend:
     image: nginx:alpine

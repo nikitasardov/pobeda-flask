@@ -193,6 +193,35 @@
 
 ---
 
+## Этап 8. Unit-тесты models.py
+
+**Что сделано:**
+- `requirements-test.txt` — pytest 9.0.2, pytest-cov 6.1.1, ссылка на requirements.txt
+- `tests/__init__.py`, `tests/conftest.py` — фикстура `_tmp_db` (autouse):
+  подменяет `DATA_DIR` и `DATABASE` через monkeypatch на `tmp_path`,
+  каждый тест получает чистую БД
+- `tests/test_models.py` — 13 тестов по 6 классам:
+  `TestGetConnection` (2), `TestInitDb` (3), `TestSeedDb` (1),
+  `TestGetAllUsers` (3), `TestGetUserById` (2), `TestCreateUser` (2)
+- `Dockerfile` — multi-stage build: стадия `base` (production) и `test` (+ pytest)
+- `docker-compose.yml` — сервис `test` с профилем `test`, `target: test`;
+  сервис `api` явно указывает `target: base`
+- Запуск: `docker compose run --rm test`
+- `README.md` — раздел «Тесты», обновлена структура проекта и таблица инструментов
+
+**Результаты проверки:**
+- 13/13 тестов passed
+- Покрытие: `models.py` — 100%, `config.py` — 100%, общее — 69%
+- Продакшен-сборка (`docker compose build api`) не затронута
+
+**Что скорректировано после ревью:**
+- (нет)
+
+**Проблемы / корректировки:**
+- (нет)
+
+---
+
 <!-- Шаблон для следующих этапов:
 
 ## Этап N. <Название>
