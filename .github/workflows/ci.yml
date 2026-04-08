@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run tests
         run: docker compose run --rm test 2>&1 | tee test-output.txt
@@ -24,21 +24,25 @@ jobs:
 
       - name: Update coverage badge
         if: github.event_name == 'push' && success()
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: coverage.json
-          label: coverage
-          message: ${{ steps.coverage.outputs.total }}%
-          valColorRange: ${{ steps.coverage.outputs.total }}
-          minColorRange: 50
-          maxColorRange: 90
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          COVERAGE_TOTAL: ${{ steps.coverage.outputs.total }}
+        run: |
+          COLOR="red"
+          if [ "$COVERAGE_TOTAL" -ge 90 ]; then COLOR="brightgreen"; elif [ "$COVERAGE_TOTAL" -ge 75 ]; then COLOR="yellow"; elif [ "$COVERAGE_TOTAL" -ge 50 ]; then COLOR="orange"; fi
+          export COLOR
+          python -c "import json, os; content={'schemaVersion': 1, 'label': 'coverage', 'message': f\"{os.environ['COVERAGE_TOTAL']}%\", 'color': os.environ['COLOR']}; payload={'files': {'coverage.json': {'content': json.dumps(content, ensure_ascii=False)}}}; print(json.dumps(payload))" > payload.json
+          curl -sS -X PATCH \
+            -H "Authorization: token ${GIST_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/gists/${GIST_ID} \
+            --data @payload.json > /dev/null
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run linters
         run: docker compose run --rm lint
@@ -48,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build API image
         run: docker compose build api

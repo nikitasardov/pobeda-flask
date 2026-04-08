@@ -1,7 +1,5 @@
 # Проект «pobeda-flask»
 
-> **ВНИМАНИЕ:** бэкенд проекта переключён с Flask на **FastAPI**.
-
 ![CI/CD](https://github.com/nikitasardov/pobeda-flask/actions/workflows/ci.yml/badge.svg)
 ![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nikitasardov/fe0cbe35c07ebafcdf77b078040ec799/raw/coverage.json)
 
