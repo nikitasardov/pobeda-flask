@@ -7,7 +7,20 @@ on:
     branches: [master]
 
 jobs:
+  test_marked:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        marker: [unit, api, smoke]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run marked tests (${{ matrix.marker }})
+        run: docker compose run --rm test pytest -m "${{ matrix.marker }}" tests/ -v
+
   test:
+    needs: [test_marked, lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -48,7 +61,7 @@ jobs:
         run: docker compose run --rm lint
 
   build:
-    needs: [test, lint]
+    needs: [test_marked, test, lint]
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
