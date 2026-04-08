@@ -10,6 +10,7 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def init_db():
     conn = get_connection()
     conn.execute('''
@@ -28,6 +29,7 @@ def init_db():
 
     conn.close()
 
+
 def seed_db(conn):
     users = [
         ('Иван Петров', 'ivan@example.com'),
@@ -41,6 +43,7 @@ def seed_db(conn):
         users
     )
     conn.commit()
+
 
 def get_all_users():
     conn = get_connection()
